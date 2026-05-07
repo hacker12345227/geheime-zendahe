@@ -1,6 +1,9 @@
 /* =========================
    RADIO ACHTERHUUS - STYLE
+   Pirate / underground radio
 ========================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Special+Elite&display=swap');
 
 * {
   margin: 0;
@@ -9,9 +12,9 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #0b0b10;
-  color: #ffffff;
+  font-family: 'Special Elite', 'Courier New', monospace;
+  background: #0a0a0a;
+  color: #f0ece0;
 }
 
 /* =========================
@@ -22,28 +25,30 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #0d0d14;
+  background: #111111;
   padding: 7px 16px;
-  border-bottom: 1px solid #1e1e2e;
-  font-size: 0.82rem;
+  border-bottom: 1px solid #2a2a2a;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
 }
 
 .onair {
-  color: #ff3b3b;
+  color: #ff2222;
+  font-family: 'Oswald', Arial, sans-serif;
   font-weight: 700;
-  letter-spacing: 1.5px;
-  font-size: 0.78rem;
+  letter-spacing: 2px;
+  font-size: 0.72rem;
   animation: blink 1.2s ease-in-out infinite;
 }
 
 .nowplaying {
-  color: #ffcc00;
-  font-weight: 600;
+  color: #e8e0cc;
+  font-size: 0.78rem;
 }
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.2; }
+  50%       { opacity: 0.15; }
 }
 
 /* =========================
@@ -54,22 +59,33 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 18px 20px;
-  background: #0f0f18;
-  border-bottom: 2px solid #ffcc00;
+  gap: 16px;
+  padding: 20px;
+  background: #0a0a0a;
+  border-bottom: 2px solid #f0ece0;
 }
 
 header img {
   width: 60px;
+  filter: brightness(0) invert(1); /* forces logo white */
 }
 
 header h1 {
-  font-size: 1.7rem;
+  font-family: 'Oswald', Arial Black, sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #f0ece0;
+  font-weight: 700;
+}
+
+header .tagline {
+  font-size: 0.68rem;
+  color: #666;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #ffcc00;
-  font-weight: 700;
+  display: block;
+  margin-top: 3px;
 }
 
 /* =========================
@@ -79,24 +95,29 @@ header h1 {
 nav {
   display: flex;
   justify-content: center;
-  gap: 28px;
-  background: #0d0d14;
-  padding: 11px 16px;
-  border-bottom: 1px solid #1e1e2e;
+  gap: 0;
+  background: #111;
+  border-bottom: 1px solid #2a2a2a;
 }
 
 nav a {
-  color: #cccccc;
+  color: #888;
   text-decoration: none;
+  font-family: 'Oswald', Arial, sans-serif;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.78rem;
-  letter-spacing: 0.5px;
-  transition: color 0.15s;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  padding: 10px 18px;
+  border-right: 1px solid #222;
+  transition: color 0.15s, background 0.15s;
 }
 
+nav a:first-child { border-left: 1px solid #222; }
+
 nav a:hover {
-  color: #ffcc00;
+  color: #f0ece0;
+  background: #1a1a1a;
 }
 
 /* =========================
@@ -110,7 +131,7 @@ nav a:hover {
   justify-content: center;
   align-items: center;
   text-align: center;
-  background: url("https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4") center/cover;
+  background: url("...") center/cover;
   position: relative;
 }
 
@@ -118,7 +139,7 @@ nav a:hover {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.78);
+  background: rgba(0, 0, 0, 0.82);
 }
 
 .hero h2,
@@ -128,16 +149,19 @@ nav a:hover {
 }
 
 .hero h2 {
+  font-family: 'Oswald', Arial Black, sans-serif;
   font-size: 2.2rem;
-  color: #ffcc00;
+  color: #f0ece0;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 4px;
+  font-weight: 700;
 }
 
 .hero p {
   margin-top: 10px;
-  color: #bbbbbb;
-  font-size: 0.95rem;
+  color: #666;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
 }
 
 /* =========================
@@ -145,7 +169,7 @@ nav a:hover {
 ========================= */
 
 .section {
-  padding: 36px 20px;
+  padding: 32px 20px;
   max-width: 900px;
   margin: auto;
 }
@@ -155,26 +179,30 @@ nav a:hover {
 ========================= */
 
 .card {
-  background: #141420;
+  background: #111;
   padding: 18px 20px;
-  border-left: 3px solid #ffcc00;  /* 3px is cleaner than 4px */
-  border-radius: 0 4px 4px 0;      /* subtle rounding on the right */
-  margin-top: 16px;
+  border: 1px solid #2a2a2a;
+  border-left: 3px solid #f0ece0;
+  margin-top: 14px;
 }
 
 .card h2 {
-  color: #ffcc00;
-  margin-bottom: 10px;
-  font-size: 1.05rem;
+  font-family: 'Oswald', Arial, sans-serif;
+  color: #f0ece0;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .card::before {
-  content: "● LIVE RADIO";
+  content: "● LIVE UITZENDING";
   display: block;
-  font-size: 0.72rem;
-  color: #ff3b3b;
+  font-family: 'Oswald', Arial, sans-serif;
+  font-size: 0.68rem;
+  color: #ff2222;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   margin-bottom: 10px;
   animation: blink 1.2s ease-in-out infinite;
 }
@@ -186,19 +214,19 @@ nav a:hover {
 .button {
   display: inline-block;
   margin-top: 12px;
-  padding: 9px 16px;
-  background: #ffcc00;
-  color: #0b0b10;
+  padding: 9px 18px;
+  background: #f0ece0;
+  color: #0a0a0a;
+  font-family: 'Oswald', Arial, sans-serif;
   font-weight: 700;
   text-decoration: none;
-  border-radius: 3px;
-  font-size: 0.85rem;
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   transition: background 0.15s;
 }
 
-.button:hover {
-  background: #ffd84d;
-}
+.button:hover { background: #ffffff; }
 
 /* =========================
    AUDIO PLAYER
@@ -207,6 +235,7 @@ nav a:hover {
 audio {
   width: 100%;
   margin-top: 12px;
+  filter: invert(1); /* dark player to match theme */
 }
 
 /* =========================
@@ -222,34 +251,37 @@ form {
 
 input {
   padding: 9px 12px;
-  background: #0d0d14;
-  color: #ffffff;
-  border: 1px solid #2a2a3a;
-  border-radius: 3px;
-  font-size: 0.85rem;
+  background: #0a0a0a;
+  color: #f0ece0;
+  border: 1px solid #333;
+  font-family: 'Special Elite', monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.5px;
   transition: border-color 0.15s;
 }
 
+input::placeholder { color: #555; }
+
 input:focus {
   outline: none;
-  border-color: #ffcc00;
+  border-color: #f0ece0;
 }
 
 button {
   padding: 9px 14px;
-  background: #ffcc00;
-  color: #0b0b10;
+  background: #f0ece0;
+  color: #0a0a0a;
   border: none;
+  font-family: 'Oswald', Arial, sans-serif;
   font-weight: 700;
-  font-size: 0.85rem;
-  border-radius: 3px;
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   cursor: pointer;
   transition: background 0.15s;
 }
 
-button:hover {
-  background: #ffd84d;
-}
+button:hover { background: #ffffff; }
 
 /* =========================
    MESSAGE
@@ -257,9 +289,10 @@ button:hover {
 
 #msg {
   margin-top: 10px;
-  color: #00e68a;
+  color: #aaffcc;
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  letter-spacing: 1px;
 }
 
 /* =========================
@@ -268,8 +301,11 @@ button:hover {
 
 footer {
   text-align: center;
-  padding: 18px 20px;
-  font-size: 0.78rem;
-  color: #555555;
-  border-top: 1px solid #1e1e2e;
+  padding: 16px;
+  font-size: 0.72rem;
+  color: #444;
+  border-top: 1px solid #1e1e1e;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: 'Oswald', Arial, sans-serif;
 }
