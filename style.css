@@ -1,9 +1,8 @@
 /* =========================
    RADIO ACHTERHUUS - STYLE
-   Pirate / underground radio
 ========================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;700&family=Share+Tech+Mono&display=swap');
 
 * {
   margin: 0;
@@ -12,9 +11,9 @@
 }
 
 body {
-  font-family: 'Special Elite', 'Courier New', monospace;
-  background: #0a0a0a;
-  color: #f0ece0;
+  font-family: 'Barlow Condensed', Arial, sans-serif;
+  background: #080808;
+  color: #e8e2d4;
 }
 
 /* =========================
@@ -25,30 +24,33 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #111111;
-  padding: 7px 16px;
-  border-bottom: 1px solid #2a2a2a;
-  font-size: 0.78rem;
-  letter-spacing: 1px;
+  background: #0e0e0e;
+  padding: 6px 20px;
+  border-bottom: 1px solid #1c1c1c;
 }
 
 .onair {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
   color: #ff2222;
-  font-family: 'Oswald', Arial, sans-serif;
-  font-weight: 700;
-  letter-spacing: 2px;
-  font-size: 0.72rem;
-  animation: blink 1.2s ease-in-out infinite;
+  letter-spacing: 3px;
+  animation: blink 1.4s ease-in-out infinite;
 }
 
 .nowplaying {
-  color: #e8e0cc;
-  font-size: 0.78rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: #555;
+  letter-spacing: 1px;
+}
+
+.nowplaying span {
+  color: #c8c0b0;
 }
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.15; }
+  50%       { opacity: 0.1; }
 }
 
 /* =========================
@@ -57,26 +59,62 @@ body {
 
 header {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 20px;
-  background: #0a0a0a;
-  border-bottom: 2px solid #f0ece0;
+  padding: 28px 20px 20px;
+  background: #080808;
+  border-bottom: 1px solid #1c1c1c;
+  gap: 4px;
+}
+
+header::before {
+  content: '☠  GEHEIME ZENDER  ·  VANUIT DE KAMER  ·  24/7  ☠';
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: #2e2e2e;
+  margin-bottom: 12px;
 }
 
 header img {
-  width: 70px;
-  mix-blend-mode: screen;
+  display: none; /* logo embedded in h1 area — use mix-blend-mode if shown */
 }
 
+/* If you want the logo image visible: */
+/*
+header img {
+  width: 64px;
+  mix-blend-mode: screen;
+  margin-bottom: 10px;
+}
+*/
+
 header h1 {
-  font-family: 'Oswald', Arial Black, sans-serif;
-  font-size: 1.9rem;
-  letter-spacing: 4px;
+  font-family: 'Bebas Neue', Arial Black, sans-serif;
+  font-size: 3.2rem;
+  letter-spacing: 6px;
+  color: #e8e2d4;
+  line-height: 0.95;
   text-transform: uppercase;
-  color: #f0ece0;
-  font-weight: 700;
+}
+
+header .tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: #3a3a3a;
+  letter-spacing: 4px;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+header::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #e8e2d4;
+  margin-top: 18px;
 }
 
 /* =========================
@@ -86,29 +124,26 @@ header h1 {
 nav {
   display: flex;
   justify-content: center;
-  gap: 0;
-  background: #111;
-  border-bottom: 1px solid #2a2a2a;
+  background: #0a0a0a;
+  border-bottom: 1px solid #1c1c1c;
 }
 
 nav a {
-  color: #888;
+  font-family: 'Bebas Neue', Arial, sans-serif;
+  color: #484848;
   text-decoration: none;
-  font-family: 'Oswald', Arial, sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  letter-spacing: 2px;
-  padding: 10px 18px;
-  border-right: 1px solid #222;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  padding: 10px 22px;
+  border-right: 1px solid #1a1a1a;
   transition: color 0.15s, background 0.15s;
 }
 
-nav a:first-child { border-left: 1px solid #222; }
+nav a:first-child { border-left: 1px solid #1a1a1a; }
 
 nav a:hover {
-  color: #f0ece0;
-  background: #1a1a1a;
+  color: #e8e2d4;
+  background: #111;
 }
 
 /* =========================
@@ -116,43 +151,50 @@ nav a:hover {
 ========================= */
 
 .hero {
-  height: 55vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  background: url("https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4") center/cover;
+  padding: 60px 20px;
+  background: #080808;
+  border-bottom: 1px solid #1c1c1c;
   position: relative;
 }
 
-.hero::after {
-  content: "";
+/* scanline texture */
+.hero::before {
+  content: '';
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.82);
-}
-
-.hero h2,
-.hero p {
-  position: relative;
-  z-index: 2;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.012) 2px,
+    rgba(255,255,255,0.012) 4px
+  );
+  pointer-events: none;
 }
 
 .hero h2 {
-  font-family: 'Oswald', Arial Black, sans-serif;
-  font-size: 2.2rem;
-  color: #f0ece0;
+  font-family: 'Bebas Neue', Arial Black, sans-serif;
+  font-size: 3.4rem;
+  color: #e8e2d4;
+  letter-spacing: 6px;
   text-transform: uppercase;
-  letter-spacing: 4px;
-  font-weight: 700;
+  position: relative;
+  z-index: 1;
 }
 
 .hero p {
-  margin-top: 10px;
-  color: #777;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: #484848;
+  letter-spacing: 2px;
+  margin-top: 12px;
+  position: relative;
+  z-index: 1;
 }
 
 /* =========================
@@ -160,7 +202,7 @@ nav a:hover {
 ========================= */
 
 .section {
-  padding: 32px 20px;
+  padding: 24px 20px;
   max-width: 900px;
   margin: auto;
 }
@@ -170,38 +212,37 @@ nav a:hover {
 ========================= */
 
 .card {
-  background: #111;
-  padding: 18px 20px;
-  border: 1px solid #2a2a2a;
-  border-left: 3px solid #f0ece0;
-  margin-top: 14px;
-}
-
-.card h2 {
-  font-family: 'Oswald', Arial, sans-serif;
-  color: #f0ece0;
-  margin-bottom: 8px;
-  font-size: 1rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-.card p {
-  color: #888;
-  font-size: 0.82rem;
-  line-height: 1.6;
+  background: #0d0d0d;
+  border: 1px solid #1e1e1e;
+  border-top: 2px solid #e8e2d4;
+  padding: 20px 22px;
+  margin-bottom: 16px;
 }
 
 .card::before {
   content: "● LIVE UITZENDING";
   display: block;
-  font-family: 'Oswald', Arial, sans-serif;
-  font-size: 0.68rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
   color: #ff2222;
-  font-weight: 700;
-  letter-spacing: 2px;
-  margin-bottom: 10px;
-  animation: blink 1.2s ease-in-out infinite;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+.card h2 {
+  font-family: 'Bebas Neue', Arial, sans-serif;
+  color: #e8e2d4;
+  font-size: 1.6rem;
+  letter-spacing: 4px;
+  margin-bottom: 6px;
+}
+
+.card p {
+  color: #484848;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  line-height: 1.5;
 }
 
 /* =========================
@@ -210,28 +251,30 @@ nav a:hover {
 
 .button {
   display: inline-block;
-  margin-top: 12px;
-  padding: 9px 18px;
-  background: #f0ece0;
-  color: #0a0a0a;
-  font-family: 'Oswald', Arial, sans-serif;
-  font-weight: 700;
+  margin-top: 14px;
+  padding: 10px 24px;
+  background: transparent;
+  color: #e8e2d4;
+  font-family: 'Bebas Neue', Arial, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 4px;
   text-decoration: none;
-  font-size: 0.78rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  transition: background 0.15s;
+  border: 1px solid #e8e2d4;
+  transition: background 0.15s, color 0.15s;
 }
 
-.button:hover { background: #ffffff; }
+.button:hover {
+  background: #e8e2d4;
+  color: #080808;
+}
 
 /* =========================
-   AUDIO PLAYER
+   AUDIO
 ========================= */
 
 audio {
   width: 100%;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 /* =========================
@@ -242,52 +285,51 @@ form {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 input {
-  padding: 9px 12px;
-  background: #0a0a0a;
-  color: #f0ece0;
-  border: 1px solid #333;
-  font-family: 'Special Elite', monospace;
-  font-size: 0.82rem;
-  letter-spacing: 0.5px;
+  padding: 10px 14px;
+  background: #080808;
+  color: #e8e2d4;
+  border: 1px solid #2a2a2a;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+  outline: none;
   transition: border-color 0.15s;
 }
 
-input::placeholder { color: #555; }
+input::placeholder { color: #333; }
 
-input:focus {
-  outline: none;
-  border-color: #f0ece0;
-}
+input:focus { border-color: #e8e2d4; }
 
 button {
-  padding: 9px 14px;
-  background: #f0ece0;
-  color: #0a0a0a;
-  border: none;
-  font-family: 'Oswald', Arial, sans-serif;
-  font-weight: 700;
-  font-size: 0.78rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  padding: 10px 24px;
+  background: transparent;
+  color: #e8e2d4;
+  border: 1px solid #e8e2d4;
+  font-family: 'Bebas Neue', Arial, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 4px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
 
-button:hover { background: #ffffff; }
+button:hover {
+  background: #e8e2d4;
+  color: #080808;
+}
 
 /* =========================
    MESSAGE
 ========================= */
 
 #msg {
-  margin-top: 10px;
-  color: #aaffcc;
-  font-weight: 700;
-  font-size: 0.82rem;
+  margin-top: 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: #5cffaa;
   letter-spacing: 1px;
 }
 
@@ -297,11 +339,11 @@ button:hover { background: #ffffff; }
 
 footer {
   text-align: center;
-  padding: 16px;
-  font-size: 0.72rem;
-  color: #444;
-  border-top: 1px solid #1e1e1e;
-  letter-spacing: 2px;
+  padding: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  color: #282828;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  font-family: 'Oswald', Arial, sans-serif;
+  border-top: 1px solid #141414;
 }
