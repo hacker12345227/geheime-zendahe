@@ -1,4 +1,7 @@
-/* Radio Achterhuus - Piraten / DAS Radio style */
+/* =========================
+   RADIO ACHTERHUUS - STYLE
+   Piraten / DAS-achtige web radio
+========================= */
 
 * {
   margin: 0;
@@ -12,7 +15,43 @@ body {
   color: #ffffff;
 }
 
-/* HEADER */
+/* =========================
+   TOPBAR (ON AIR + NOW PLAYING)
+========================= */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f0f16;
+  padding: 8px 15px;
+  border-bottom: 1px solid #222;
+  font-size: 0.9rem;
+}
+
+.onair {
+  color: red;
+  font-weight: bold;
+  animation: blink 1s infinite;
+  letter-spacing: 1px;
+}
+
+.nowplaying {
+  color: #ffcc00;
+  font-weight: bold;
+}
+
+/* knipper effect */
+@keyframes blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* =========================
+   HEADER
+========================= */
+
 header {
   display: flex;
   align-items: center;
@@ -25,7 +64,6 @@ header {
 
 header img {
   width: 70px;
-  height: auto;
 }
 
 header h1 {
@@ -35,7 +73,10 @@ header h1 {
   color: #ffcc00;
 }
 
-/* NAV */
+/* =========================
+   NAV
+========================= */
+
 nav {
   display: flex;
   justify-content: center;
@@ -58,9 +99,12 @@ nav a:hover {
   color: #ffcc00;
 }
 
-/* HERO */
+/* =========================
+   HERO
+========================= */
+
 .hero {
-  height: 60vh;
+  height: 55vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,7 +129,7 @@ nav a:hover {
 }
 
 .hero h2 {
-  font-size: 2.5rem;
+  font-size: 2.4rem;
   color: #ffcc00;
   text-transform: uppercase;
 }
@@ -95,12 +139,19 @@ nav a:hover {
   color: #ddd;
 }
 
-/* LIVE BLOCK */
+/* =========================
+   SECTIONS
+========================= */
+
 .section {
   padding: 40px 20px;
   max-width: 900px;
   margin: auto;
 }
+
+/* =========================
+   CARDS
+========================= */
 
 .card {
   background: #141420;
@@ -114,6 +165,21 @@ nav a:hover {
   margin-bottom: 10px;
 }
 
+/* LIVE LABEL */
+.card::before {
+  content: "● LIVE RADIO";
+  display: inline-block;
+  font-size: 0.75rem;
+  color: red;
+  font-weight: bold;
+  margin-bottom: 10px;
+  animation: blink 1s infinite;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
 .button {
   display: inline-block;
   margin-top: 10px;
@@ -123,28 +189,72 @@ nav a:hover {
   font-weight: bold;
   text-decoration: none;
   border-radius: 3px;
+  transition: 0.2s;
 }
 
 .button:hover {
   background: #ffd84d;
 }
 
-/* ON AIR FEEL */
-.card::before {
-  content: "● LIVE";
-  display: inline-block;
-  font-size: 0.8rem;
-  color: red;
+/* =========================
+   AUDIO PLAYER
+========================= */
+
+audio {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* =========================
+   FORM (VERZOEKPLAATJE)
+========================= */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+input {
+  padding: 10px;
+  border: none;
+  background: #0f0f16;
+  color: white;
+  border: 1px solid #333;
+}
+
+input:focus {
+  outline: none;
+  border-color: #ffcc00;
+}
+
+button {
+  padding: 10px;
+  background: #ffcc00;
+  border: none;
   font-weight: bold;
-  margin-bottom: 10px;
-  animation: blink 1s infinite;
+  cursor: pointer;
 }
 
-@keyframes blink {
-  50% { opacity: 0.3; }
+button:hover {
+  background: #ffd84d;
 }
 
-/* FOOTER (voor later) */
+/* =========================
+   MESSAGE
+========================= */
+
+#msg {
+  margin-top: 10px;
+  color: #00ff99;
+  font-weight: bold;
+}
+
+/* =========================
+   FOOTER (OPTIONEEL)
+========================= */
+
 footer {
   text-align: center;
   padding: 20px;
