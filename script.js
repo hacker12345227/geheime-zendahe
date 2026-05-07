@@ -2,7 +2,7 @@
    RADIO ACHTERHUUS - APP.JS
 ========================= */
 
-const STREAM_URL = 'http://stream.radiobest.eu:8000/128';
+const STREAM_URL = 'https://stream.radiobest.eu:8000/128';
 
 // Replace with your actual Icecast/Shoutcast stats URL, e.g.:
 // const STATS_URL = 'https://stream-url-hier.nl/status-json.xsl';
