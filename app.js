@@ -5,7 +5,7 @@
 const STREAM_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/';
 
 // Proxied through Cloudflare Worker to avoid mixed content (HTTP→HTTPS)
-const STATS_URL = 'http://radio.titanpulse.nl:8000/status-json.xsl';
+const STATS_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/stats';
 
 /* -- State -- */
 let isPlaying = false;
