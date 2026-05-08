@@ -3,9 +3,7 @@
 ========================= */
 
 const STREAM_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/';
-
-// Proxied through Cloudflare Worker to avoid mixed content (HTTP→HTTPS)
-const STATS_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/stats';
+const STATS_URL  = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/stats';
 
 /* -- State -- */
 let isPlaying = false;
@@ -153,8 +151,6 @@ function animateBar() {
 
 /* =========================
    NOW PLAYING — REAL ICECAST DATA
-   Fetched via Cloudflare Worker proxy (/stats)
-   to avoid mixed content (HTTP Icecast → HTTPS page)
 ========================= */
 
 function updateNowPlaying(title) {
@@ -177,11 +173,9 @@ async function fetchStreamMeta() {
 
     const data = await res.json();
 
-    // Icecast JSON: icestats.source (object or array)
     const source = data?.icestats?.source;
 
     if (!source) {
-      // Server is up but no active source/mountpoint
       updateNowPlaying('Radio Achterhuus Live');
       updateListeners(0);
       return;
@@ -190,14 +184,13 @@ async function fetchStreamMeta() {
     // If multiple mountpoints, source is an array — use the first one
     const s = Array.isArray(source) ? source[0] : source;
 
-    // Title comes from stream metadata sent by BUTT
-    updateNowPlaying(s.title || s.server_name || 'Radio Achterhuus Live');
+    // x_icy_title is where BUTT sends the track name in Icecast 2.5
+    updateNowPlaying(s.metadata?.x_icy_title || s.title || s.server_name || 'Radio Achterhuus Live');
 
     // Listener count
     updateListeners(s.listeners ?? s.listeners_current ?? null);
 
   } catch (e) {
-    // Network error or Worker not yet updated — silently keep last value
     console.warn('fetchStreamMeta error:', e);
   }
 }
@@ -218,9 +211,6 @@ function sendRequest(e) {
   document.getElementById('name').value = '';
   document.getElementById('song').value = '';
 
-  // Optional: send to a backend endpoint
-  // fetch('/request', { method: 'POST', body: JSON.stringify({ name, song }) });
-
   setTimeout(() => { msg.textContent = ''; }, 6000);
 }
 
@@ -228,7 +218,6 @@ function sendRequest(e) {
    INIT
 ========================= */
 
-// Initial state
 setStopped();
 updateNowPlaying('Radio Achterhuus Live');
 
