@@ -4,9 +4,8 @@
 
 const STREAM_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/';
 
-// Replace with your actual Icecast/Shoutcast stats URL, e.g.:
-// const STATS_URL = 'https://stream-url-hier.nl/status-json.xsl';
-const STATS_URL = null;
+// Proxied through Cloudflare Worker to avoid mixed content (HTTP→HTTPS)
+const STATS_URL = 'http://radio.titanpulse.nl:8000/status-json.xsl';
 
 /* -- State -- */
 let isPlaying = false;
@@ -42,7 +41,6 @@ function togglePlay() {
 }
 
 function playStream() {
-  // Re-set src to force fresh connect
   audio.src = STREAM_URL;
   audio.volume = parseFloat(volumeSlider.value);
   audio.load();
@@ -90,6 +88,7 @@ function setPlaying() {
   playerStatus.textContent = 'LIVE';
   playerMeta.textContent = 'Verbonden · Live stream';
   topBadge.className = 'onair';
+  topBadge.textContent = '● LIVE';
   startBarAnimation();
 }
 
@@ -145,7 +144,6 @@ function stopBarAnimation() {
 }
 
 function animateBar() {
-  // Simulate a VU-meter style pulsing bar
   barPos += 0.04;
   const wave = Math.sin(barPos) * 30 + Math.sin(barPos * 2.3) * 15 + Math.sin(barPos * 0.7) * 20;
   const pct = Math.max(5, Math.min(95, 50 + wave));
@@ -154,19 +152,10 @@ function animateBar() {
 }
 
 /* =========================
-   NOW PLAYING SIMULATION
-   Replace with real Icecast/Shoutcast metadata fetch
+   NOW PLAYING — REAL ICECAST DATA
+   Fetched via Cloudflare Worker proxy (/stats)
+   to avoid mixed content (HTTP Icecast → HTTPS page)
 ========================= */
-
-const fakeTracks = [
-  'DJ Achterhoek – Nacht in de Schuur',
-  'Piraten Hitmix 2026',
-  'Live Vinyl Session',
-  'Achterhuus Classics',
-  'Feestmix Drenthe',
-  'Zondagochtend Session',
-  'Achterhoek After Hours'
-];
 
 function updateNowPlaying(title) {
   const display = title || 'Radio Achterhuus Live';
@@ -174,31 +163,42 @@ function updateNowPlaying(title) {
   playerTrack.textContent = display;
 }
 
-async function fetchStreamMeta() {
-  if (!STATS_URL) {
-    // Simulate rotation when no stats URL configured
-    const track = fakeTracks[Math.floor(Math.random() * fakeTracks.length)];
-    updateNowPlaying(track);
-    return;
+function updateListeners(count) {
+  if (count !== undefined && count !== null) {
+    listenerEl.textContent = count + ' LUISTERAARS';
   }
+}
 
+async function fetchStreamMeta() {
   try {
     const res = await fetch(STATS_URL, { cache: 'no-store' });
+
+    if (!res.ok) throw new Error('Stats fetch failed: ' + res.status);
+
     const data = await res.json();
 
-    // Icecast JSON format
+    // Icecast JSON: icestats.source (object or array)
     const source = data?.icestats?.source;
-    if (source) {
-      const s = Array.isArray(source) ? source[0] : source;
-      updateNowPlaying(s.title || s.stream_start || 'Live');
-      if (s.listeners !== undefined) {
-        listenerEl.textContent = s.listeners + ' LUISTERAARS';
-      }
+
+    if (!source) {
+      // Server is up but no active source/mountpoint
+      updateNowPlaying('Radio Achterhuus Live');
+      updateListeners(0);
+      return;
     }
+
+    // If multiple mountpoints, source is an array — use the first one
+    const s = Array.isArray(source) ? source[0] : source;
+
+    // Title comes from stream metadata sent by BUTT
+    updateNowPlaying(s.title || s.server_name || 'Radio Achterhuus Live');
+
+    // Listener count
+    updateListeners(s.listeners ?? s.listeners_current ?? null);
+
   } catch (e) {
-    // Silently fall back
-    const track = fakeTracks[Math.floor(Math.random() * fakeTracks.length)];
-    updateNowPlaying(track);
+    // Network error or Worker not yet updated — silently keep last value
+    console.warn('fetchStreamMeta error:', e);
   }
 }
 
@@ -230,9 +230,9 @@ function sendRequest(e) {
 
 // Initial state
 setStopped();
-updateNowPlaying(fakeTracks[0]);
+updateNowPlaying('Radio Achterhuus Live');
 
-// Poll for now playing every 10s
+// Fetch immediately, then every 10 seconds
 fetchStreamMeta();
 setInterval(fetchStreamMeta, 10000);
 
