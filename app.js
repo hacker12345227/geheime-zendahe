@@ -2,8 +2,9 @@
    RADIO ACHTERHUUS - APP.JS
 ========================= */
 
-const STREAM_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/';
-const STATS_URL  = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/stats';
+const STREAM_URL  = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/';
+const STATS_URL   = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/stats';
+const REQUEST_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/request';
 
 /* -- State -- */
 let isPlaying = false;
@@ -167,13 +168,11 @@ function updateListeners(count) {
 
 async function fetchStreamMeta() {
   try {
-    // Timestamp prevents browser and Worker caching
     const res = await fetch(STATS_URL + '?_=' + Date.now(), { cache: 'no-store' });
 
     if (!res.ok) throw new Error('Stats fetch failed: ' + res.status);
 
     const data = await res.json();
-
     const source = data?.icestats?.source;
 
     if (!source) {
@@ -182,13 +181,9 @@ async function fetchStreamMeta() {
       return;
     }
 
-    // If multiple mountpoints, source is an array — use the first one
     const s = Array.isArray(source) ? source[0] : source;
 
-    // x_icy_title is where BUTT sends the track name in Icecast 2.5
     updateNowPlaying(s.metadata?.x_icy_title || s.title || s.server_name || 'Radio Achterhuus Live');
-
-    // Listener count
     updateListeners(s.listeners ?? s.listeners_current ?? null);
 
   } catch (e) {
@@ -200,17 +195,42 @@ async function fetchStreamMeta() {
    REQUEST FORM
 ========================= */
 
-function sendRequest(e) {
+async function sendRequest(e) {
   e.preventDefault();
+
   const name = document.getElementById('name').value.trim();
   const song = document.getElementById('song').value.trim();
   const msg  = document.getElementById('msg');
 
-  msg.style.color = '#5cffaa';
-  msg.textContent = '✓ BEDANKT ' + name.toUpperCase() + ' — "' + song + '" IS ONTVANGEN!';
+  if (!name || !song) {
+    msg.style.color = '#ff5c5c';
+    msg.textContent = '⚠ Vul je naam en een nummer in.';
+    setTimeout(() => { msg.textContent = ''; }, 4000);
+    return;
+  }
 
-  document.getElementById('name').value = '';
-  document.getElementById('song').value = '';
+  msg.style.color = '#aaa';
+  msg.textContent = 'Verzoek versturen...';
+
+  try {
+    const res = await fetch(REQUEST_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, song }),
+    });
+
+    if (!res.ok) throw new Error('Server error ' + res.status);
+
+    msg.style.color = '#5cffaa';
+    msg.textContent = '✓ BEDANKT ' + name.toUpperCase() + ' — "' + song + '" IS ONTVANGEN!';
+    document.getElementById('name').value = '';
+    document.getElementById('song').value = '';
+
+  } catch (err) {
+    msg.style.color = '#ff5c5c';
+    msg.textContent = '✗ Verzoek mislukt. Probeer het opnieuw.';
+    console.error('Request error:', err);
+  }
 
   setTimeout(() => { msg.textContent = ''; }, 6000);
 }
@@ -222,11 +242,10 @@ function sendRequest(e) {
 setStopped();
 updateNowPlaying('Radio Achterhuus Live');
 
-// Fetch immediately, then every 5 seconds
 fetchStreamMeta();
 setInterval(fetchStreamMeta, 5000);
 
-// Expose globals used by inline HTML handlers
+/* -- Expose globals used by inline HTML handlers -- */
 window.togglePlay   = togglePlay;
 window.setVolume    = setVolume;
 window.sendRequest  = sendRequest;
