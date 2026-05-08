@@ -186,7 +186,8 @@ async function fetchStreamMeta() {
     const s = Array.isArray(source) ? source[0] : source;
 
     // x_icy_title is where BUTT sends the track name in Icecast 2.5
-    updateNowPlaying(s.metadata?.x_icy_title || s.title || s.server_name || 'Radio Achterhuus Live');
+    const rawTitle = s.metadata?.x_icy_title || s.title || s.server_name || '';
+updateNowPlaying(cleanTitle(rawTitle));
 
     // Listener count
     updateListeners(s.listeners ?? s.listeners_current ?? null);
@@ -222,6 +223,13 @@ function sendRequest(e) {
 setStopped();
 updateNowPlaying('Radio Achterhuus Live');
 
+function cleanTitle(raw) {
+  if (!raw) return 'Radio Achterhuus Live';
+  // If there's a parenthesized part, extract just that
+  const match = raw.match(/\(([^)]+)\)/);
+  if (match) return match[1];
+  return raw.trim() || 'Radio Achterhuus Live';
+}
 // Fetch immediately, then every 5 seconds
 fetchStreamMeta();
 setInterval(fetchStreamMeta, 5000);
