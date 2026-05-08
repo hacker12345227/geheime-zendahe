@@ -167,7 +167,8 @@ function updateListeners(count) {
 
 async function fetchStreamMeta() {
   try {
-    const res = await fetch(STATS_URL, { cache: 'no-store' });
+    // Timestamp prevents browser and Worker caching
+    const res = await fetch(STATS_URL + '?_=' + Date.now(), { cache: 'no-store' });
 
     if (!res.ok) throw new Error('Stats fetch failed: ' + res.status);
 
@@ -221,9 +222,9 @@ function sendRequest(e) {
 setStopped();
 updateNowPlaying('Radio Achterhuus Live');
 
-// Fetch immediately, then every 10 seconds
+// Fetch immediately, then every 5 seconds
 fetchStreamMeta();
-setInterval(fetchStreamMeta, 10000);
+setInterval(fetchStreamMeta, 5000);
 
 // Expose globals used by inline HTML handlers
 window.togglePlay   = togglePlay;
