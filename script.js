@@ -2,7 +2,7 @@
    RADIO ACHTERHUUS - APP.JS
 ========================= */
 
-const STREAM_URL = 'http://radio.titanpulse.nl:8000/live';
+const STREAM_URL = 'https://misty-cloud-488a.jarno-eulen12.workers.dev/';
 
 // Replace with your actual Icecast/Shoutcast stats URL, e.g.:
 // const STATS_URL = 'https://stream-url-hier.nl/status-json.xsl';
