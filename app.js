@@ -56,7 +56,12 @@ function playStream() {
 function pauseStream() {
   audio.pause();
   audio.src = '';
-  setStopped();
+  // Stream may still be live, go back to ready if so
+  if (isLive) {
+    setReady();
+  } else {
+    setStopped();
+  }
 }
 
 function setVolume(val) {
@@ -72,7 +77,14 @@ audio.addEventListener('error',   setOffline);
 audio.addEventListener('ended',   setStopped);
 
 audio.addEventListener('pause', () => {
-  if (isPlaying) setStopped();
+  if (isPlaying) {
+    isPlaying = false;
+    if (isLive) {
+      setReady();
+    } else {
+      setStopped();
+    }
+  }
 });
 
 /* -- State setters -- */
@@ -89,6 +101,21 @@ function setPlaying() {
   topBadge.className = 'onair';
   topBadge.textContent = '● LIVE';
   startBarAnimation();
+}
+
+function setReady() {
+  // Stream is live but user is not listening
+  isPlaying = false;
+  isLive = true;
+  playBtn.classList.remove('playing');
+  playIcon.textContent = '▶';
+  playLabel.textContent = 'AFSPELEN';
+  playerDot.className = 'player-live-dot';
+  playerStatus.textContent = 'ON AIR';
+  playerMeta.textContent = 'Stream is live · Klik om te luisteren';
+  topBadge.className = 'onair';
+  topBadge.textContent = '● LIVE';
+  stopBarAnimation();
 }
 
 function setBuffering() {
@@ -185,7 +212,8 @@ async function fetchStreamMeta() {
     updateNowPlaying(s.metadata?.x_icy_title || s.title || s.server_name || 'Radio Achterhuus Live');
     updateListeners(s.listeners ?? s.listeners_current ?? null);
 
-    if (!isPlaying && !isLive) setStopped();
+    // Source is live — if not already playing, show ready state
+    if (!isPlaying) setReady();
 
   } catch (e) {
     console.warn('fetchStreamMeta error:', e);
@@ -208,7 +236,7 @@ async function checkStreamOnline() {
     if (!source) {
       setOffline();
     } else {
-      setStopped();
+      setReady();
     }
   } catch {
     setOffline();
