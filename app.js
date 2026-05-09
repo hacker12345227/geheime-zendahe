@@ -169,7 +169,6 @@ function updateListeners(count) {
 async function fetchStreamMeta() {
   try {
     const res = await fetch(STATS_URL + '?_=' + Date.now(), { cache: 'no-store' });
-
     if (!res.ok) throw new Error('Stats fetch failed: ' + res.status);
 
     const data = await res.json();
@@ -178,16 +177,46 @@ async function fetchStreamMeta() {
     if (!source) {
       updateNowPlaying('Radio Achterhuus Live');
       updateListeners(0);
+      // No active source = stream is offline
+      if (!isPlaying) setOffline();
       return;
     }
 
     const s = Array.isArray(source) ? source[0] : source;
-
     updateNowPlaying(s.metadata?.x_icy_title || s.title || s.server_name || 'Radio Achterhuus Live');
     updateListeners(s.listeners ?? s.listeners_current ?? null);
 
+    // Source is up but player is idle — show stopped (ready to play)
+    if (!isPlaying && !isLive) setStopped();
+
   } catch (e) {
     console.warn('fetchStreamMeta error:', e);
+    // Fetch itself failed = no connection to server at all
+    if (!isPlaying) setOffline();
+  }
+}
+
+/* =========================
+   STREAM ONLINE CHECK
+========================= */
+
+async function checkStreamOnline() {
+  try {
+    const res = await fetch(STATS_URL + '?_=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error('offline');
+
+    const data = await res.json();
+    const source = data?.icestats?.source;
+
+    if (!source) {
+      // Icecast is reachable but no source is broadcasting
+      setOffline();
+    } else {
+      // Source is live and ready — show stopped (ready to play)
+      setStopped();
+    }
+  } catch {
+    setOffline();
   }
 }
 
@@ -239,9 +268,11 @@ async function sendRequest(e) {
    INIT
 ========================= */
 
-setStopped();
+// Check stream status before showing anything
+checkStreamOnline();
 updateNowPlaying('Radio Achterhuus Live');
 
+// Fetch meta + repeat every 5 seconds
 fetchStreamMeta();
 setInterval(fetchStreamMeta, 5000);
 
