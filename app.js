@@ -177,7 +177,6 @@ async function fetchStreamMeta() {
     if (!source) {
       updateNowPlaying('Radio Achterhuus Live');
       updateListeners(0);
-      // No active source = stream is offline
       if (!isPlaying) setOffline();
       return;
     }
@@ -186,12 +185,10 @@ async function fetchStreamMeta() {
     updateNowPlaying(s.metadata?.x_icy_title || s.title || s.server_name || 'Radio Achterhuus Live');
     updateListeners(s.listeners ?? s.listeners_current ?? null);
 
-    // Source is up but player is idle — show stopped (ready to play)
     if (!isPlaying && !isLive) setStopped();
 
   } catch (e) {
     console.warn('fetchStreamMeta error:', e);
-    // Fetch itself failed = no connection to server at all
     if (!isPlaying) setOffline();
   }
 }
@@ -209,10 +206,8 @@ async function checkStreamOnline() {
     const source = data?.icestats?.source;
 
     if (!source) {
-      // Icecast is reachable but no source is broadcasting
       setOffline();
     } else {
-      // Source is live and ready — show stopped (ready to play)
       setStopped();
     }
   } catch {
@@ -268,9 +263,10 @@ async function sendRequest(e) {
    INIT
 ========================= */
 
-// Check stream status before showing anything
-checkStreamOnline();
+// Start offline instantly, checkStreamOnline will correct if stream is up
+setOffline();
 updateNowPlaying('Radio Achterhuus Live');
+checkStreamOnline();
 
 // Fetch meta + repeat every 5 seconds
 fetchStreamMeta();
